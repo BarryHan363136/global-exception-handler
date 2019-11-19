@@ -2,6 +2,7 @@ package com.barry.global.exception.global;
 
 import com.barry.global.exception.common.ResultStatusCode;
 import com.barry.global.exception.vo.Result;
+import com.sun.media.jfxmedia.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import java.util.Enumeration;
 
 /**
  * 类描述: 全局异常拦截处理器
@@ -39,7 +41,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestParameterException.class, BindException.class,
             ServletRequestBindingException.class, MethodArgumentNotValidException.class, ConstraintViolationException.class})
     public Result handleHttpMessageNotReadableException(Exception e, HttpServletRequest request) {
-        log.error("参数解析失败,URI:"+request.getRequestURI()+",headers:"+request.getHeaderNames().toString(), e);
+        Enumeration enumeration = request.getHeaderNames();
+        while(enumeration.hasMoreElements()){
+            log.info("===============>"+enumeration.nextElement());
+            Object obj = enumeration.nextElement();
+            log.info("===============>"+obj);
+        }
+        log.error("参数解析失败,URI:"+request.getRequestURI(), e);
         if (e instanceof BindException){
             return new Result(ResultStatusCode.BAD_REQUEST.getCode(), ((BindException)e).getAllErrors().get(0).getDefaultMessage());
         } else if (e instanceof ServletRequestBindingException){
