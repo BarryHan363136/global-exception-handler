@@ -16,7 +16,7 @@
         <commons-lang3.version>3.7</commons-lang3.version>
         <commons-io.version>2.6</commons-io.version>
         <lombok.version>1.18.0</lombok.version>
-        <jackson.version>2.9.6</jackson.version>
+        <jackson.version>2.12.1</jackson.version>
     </properties>
 
     <dependencyManagement>
